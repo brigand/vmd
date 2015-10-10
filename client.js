@@ -6,7 +6,7 @@ const conf = remote.getGlobal('conf')
 
 marked.setOptions({
   highlight: function (code, lang) {
-    return highlightjs.highlightAuto(code, [ lang ]).value
+    return highlightjs.highlightAuto(code, [ lang || 'plain' ]).value
   }
 })
 

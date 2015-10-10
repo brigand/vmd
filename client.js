@@ -11,11 +11,29 @@ marked.setOptions({
 })
 
 ipc.on('md', function (raw) {
-  const md = marked(raw)
-  const base = document.querySelector('base')
-  const body = document.querySelector('.markdown-body')
-  base.setAttribute('href', remote.getGlobal('baseUrl'))
-  body.innerHTML = md
+  try {
+    const md = marked(raw)
+    const base = document.querySelector('base')
+    const body = document.querySelector('.markdown-body')
+    base.setAttribute('href', remote.getGlobal('baseUrl'))
+    body.innerHTML = md
+  } catch (e) {
+    document.body.style.color = 'white'
+    document.body.style.background = 'red'
+
+    const errorTitle = document.createElement('h1')
+    errorTitle.textContent = e.type + ': ' + e.message
+    errorTitle.style.fontSize = '20px'
+    errorTitle.style.margin = '1em 0.5em'
+    document.body.appendChild(errorTitle)
+
+    const errorBody = document.createElement('pre')
+    errorBody.textContent = e.stack
+    errorBody.style.fontSize = '14px'
+    errorBody.style.margin = '0 0.5em'
+    errorBody.style.whiteSpace = 'pre-wrap'
+    document.body.appendChild(errorBody)
+  }
 })
 
 window.addEventListener('keydown', function (ev) {
